@@ -1,0 +1,118 @@
+{% extends 'app_admin/base.html'%}
+{% load static %}
+{%block content%}
+{% block css %}
+<!-- <link rel="stylesheet" href="{% static 'css/AdminLTE.min.css' %}"> -->
+{% endblock %}
+<!-- ============================================================== -->
+<!-- Bread crumb and right sidebar toggle -->
+<!-- ============================================================== -->
+ <div class="row page-titles">
+     <div class="col-md-5 align-self-center">
+       <h3 class="text-themecolor"><a href='{%url "app_admin:admin_items" username=user.username%}'>Critical Ressource List</a></h3>
+     </div>
+     <div class="col-md-7 align-self-center">
+         <ol class="breadcrumb">
+             <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
+             <li class="breadcrumb-item active">Critical Ressource List</li>
+         </ol>
+     </div>
+     <div class="">
+         <button class="right-side-toggle waves-effect waves-light btn-inverse btn btn-circle btn-sm pull-right m-l-10"><i class="ti-settings text-white"></i></button>
+     </div>
+ </div>
+ <!-- ============================================================== -->
+ <!-- End Bread crumb and right sidebar toggle -->
+ <!-- ============================================================== -->
+ <!-- ============================================================== -->
+ <!-- Container fluid  -->
+ <!-- ============================================================== -->
+ <div class="container-fluid">
+
+     <!-- ============================================================== -->
+     <!-- Start Page Content -->
+     <!-- ============================================================== -->
+     <!-- .row -->
+     <tfoot>
+    <tr>
+        <td colspan="2">
+            <button type="button" class="btn btn-info btn-rounded" data-toggle="modal" data-target="#add-contact">Add New Server</button>
+        </td>
+        <div id="add-contact" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">× </button>
+                        <h4 class="modal-title" id="myModalLabel"> Add New Server</h4> </div>
+                    <div class="modal-body">
+                        <from class="form-horizontal form-material">
+                            <div class="form-group">
+                                <div class="col-md-12 m-b-20">
+                                    <input type="text" class="form-control" placeholder="Server Name"> </div>
+                                <div class="col-md-12 m-b-20">
+                                    <input type="text" class="form-control" placeholder="Hostname"> </div>
+                                <div class="col-md-12 m-b-20">
+                                    <input type="text" class="form-control" placeholder="IP Address"> </div>
+                                <div class="col-md-12 m-b-20">
+                                    <input type="text" class="form-control" placeholder="protocol"> </div>
+                                <div class="col-md-12 m-b-20">
+                                    <input type="text" class="form-control" placeholder="User"> </div>
+                            </div>
+                        </from>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-info waves-effect" data-dismiss="modal"><i class="fa fa-check"></i> Submit</button>
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-times"></i> Cancel</button>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <td colspan="7">
+            <div class="text-right">
+                <ul class="pagination"> </ul>
+            </div>
+        </td>
+    </tr>
+</tfoot>
+     <!-- .row -->
+     <div class="row">
+         <!-- .col -->
+         {% for  server in servers%}
+         <div class="col-md-6 col-lg-6 col-xlg-4">
+             <div class="card card-body">
+                 <div class="row">
+                     <div class="col-md-8 col-lg-9">
+                         <h3 class="box-title m-b-10" style="text-align:center;color:#26c6da;">Server name: <span style="color:white;">{{server.name}}</span></h3>
+                         <hr>
+                         <h6>Hostname: <span style="color:grey;">{{server.hostname}}</span></h6>
+                         <h6>IP Address: <span style="color:grey;">{{server.ip}}</span></h6>
+                         <h6>Protocol: <span style="color:grey;">{{server.credential.protocol|upper}}</span></h6>
+                         <h6>User: <span style="color:grey;">{{server.credential.user}}</span></h6>
+                         <div class="m-t-20">
+                           <button type="button" class="btn waves-effect waves-light btn-rounded btn-outline-info"><i class="fa fa-pencil"></i>  Edit</button>
+                           <button type="button" class="btn waves-effect waves-light btn-rounded btn-outline-danger m-l-15">Delete</button>
+                         </div>
+                     </div>
+
+                 </div>
+             </div>
+         </div>
+         {%endfor%}
+         <!-- /.col -->
+
+     </div>
+     <!-- /.row -->
+     <!-- ============================================================== -->
+     <!-- End PAge Content -->
+     <!-- ============================================================== -->
+ </div>
+ <!-- ============================================================== -->
+ <!-- End Container fluid  -->
+ <!-- ============================================================== -->
+ {%block js%}
+ <script src="{% static 'plugins/jQuery/jquery-2.2.3.min.js' %}"></script>
+ <script src="{% static 'js/app.min.js' %}"></script>
+ {%endblock%}
+{%endblock%}

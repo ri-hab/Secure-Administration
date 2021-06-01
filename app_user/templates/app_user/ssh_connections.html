@@ -1,0 +1,326 @@
+{% extends 'app_user/base.html'%}
+{% load static %}
+{%block content%}
+{% block css %}
+<link rel="stylesheet" href="{% static 'plugins/jquery-ui/jquery-ui.min.css'%}">
+<link rel="stylesheet" href="{% static 'plugins/xterm/xterm.css' %}"/>
+<link rel="stylesheet" href="{% static 'plugins/xterm/addons/fullscreen/fullscreen.css' %}"/>
+<link rel="stylesheet" href='{% static "plugins/toastr/toastr.css" %}'/>
+<!-- <link rel="stylesheet" href="{% static 'css/AdminLTE.min.css' %}"> -->
+{% endblock %}
+
+<!-- ============================================================== -->
+<!-- Bread crumb and right sidebar toggle -->
+<!-- ============================================================== -->
+ <div class="row page-titles">
+     <div class="col-md-5 align-self-center">
+         <h3 class="text-themecolor"><a href='{%url "app_user:ssh_connect" username=user.username%}'>SSH Connections</a></h3>
+     </div>
+     <div class="col-md-7 align-self-center">
+         <ol class="breadcrumb">
+             <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
+             <li class="breadcrumb-item">Terminal Access</li>
+             <li class="breadcrumb-item active">SSH Connections</li>
+         </ol>
+     </div>
+     <div class="">
+         <button class="right-side-toggle waves-effect waves-light btn-inverse btn btn-circle btn-sm pull-right m-l-10"><i class="ti-settings text-white"></i></button>
+     </div>
+ </div>
+ <!-- ============================================================== -->
+ <!-- End Bread crumb and right sidebar toggle -->
+ <!-- ============================================================== -->
+ <!-- ============================================================== -->
+     <!-- Container fluid  -->
+     <!-- ============================================================== -->
+     <div class="container-fluid">
+         <!-- ============================================================== -->
+         <!-- Start Page Content -->
+         <!-- ============================================================== -->
+         <!-- Row -->
+         <div class="row">
+           <div class="col-lg-3">
+                 <div class="card " >
+
+                     <div class="card-body bg-inverse">
+                         <h4 class="text-white card-title" style="text-align:center;">SSH Servers list</h4>
+                     </div>
+                     <div class="card-body">
+                         <div class="message-box contact-box">
+                             <div class="message-widget contact-widget">
+                                 <!-- Message -->
+                                 {% for  server in servers%}
+                                 {%if server.credential.user == user%}
+                                  {%if server.credential.protocol|slice:":3" == 'ssh'%}
+
+                                  <a>
+                                   <div class="p-l-20" class="server_details">
+                                       <h4 class="font-medium servername" style="color:#1e88e5;">{{server.name}}</h4>
+                                       <h6>Hostname: <span class="hostname" style="color:grey;">{{server.hostname}}</span></h6>
+                                       <h6>IP Address: <span class="ip" style="color:grey;">{{server.ip}}</span></h6>
+                                       <h6>Protocol: <span class="protocol" style="color:grey;">{{server.credential.protocol|upper}}</span></h6>
+                                       <h6>User: <span style="color:grey;">{{server.credential.user}}</span></h6>
+                                       <h6 style="display:None;">Id: <span class="id" style="color:grey;display:None;">{{server.id}}</span></h6>
+                                      <button type="button" class="buttonConnect btn waves-effect waves-light btn-rounded btn-outline-success m-b-10">Connect</button>
+                                      <button type="button" class="buttonDisconnect btn waves-effect waves-light btn-rounded btn-outline-danger">Disconnect</button>
+                                   </div>
+                                 </a>
+                                 {%endif%}
+                                 {%endif%}
+                                 {%endfor%}
+                             </div>
+                         </div>
+                     </div>
+                 </div>
+
+                 </div>
+
+
+                 <div class="col-lg-9">
+                 <div class="card">
+
+                           <div class="card-body p-b-0">
+
+                               <h4 class="card-title" style="text-align:center">SSH Connections</h4>
+                                 <hr>
+                           <!-- Nav tabs -->
+                           <ul class="nav nav-tabs customtab" id="myTab" role="tablist">
+                               <li class="nav-item"> <a class="nav-link active" href="#info" role="tab"><span>Info </span>
+                                 <button type="button" class="close closeTab"> ×</button></a>
+                             </li>
+                             <li class="nav-item"> <a class="nav-link" href="#home2" role="tab"><span>home </span>
+                               <button type="button" class="close closeTab"> ×</button></a>
+                           </li>
+                           </ul>
+                           <!-- Tab panes -->
+                           <div class="tab-content tabcontent-border">
+                               <div class="tab-pane active" id="info" role="tabpanel">
+                                   <div class="p-20">
+                                     Info
+                                   </div>
+                               </div>
+
+                                <div class="tab-pane  p-20" id="home2" role="tabpanel">home page</div>
+
+                         </div>
+                       </div>
+
+                       </div>
+                       <!-- end <div class="card"> -->
+                          </div>
+                          <!-- end <div class="col-lg-9"> -->
+
+               </div>
+            <!-- Row -->
+
+
+         <!-- ============================================================== -->
+         <!-- End PAge Content -->
+         <!-- ============================================================== -->
+</div>
+     <!-- ============================================================== -->
+     <!-- End Container fluid  -->
+     <!-- ============================================================== -->
+
+{% block js %}
+<script src="{% static 'plugins/jQuery/jquery-2.2.3.min.js' %}"></script>
+<script src="{% static 'plugins/jquery-ui/jquery-ui.min.js' %}"></script>
+<script src="{% static 'plugins/jquery.fullscreen/jquery.fullscreen.min.js' %}"></script>
+<script src="{% static 'js/app.min.js' %}"></script>
+<script src="{% static 'plugins/xterm/xterm.js' %}"></script>
+<script src="{% static 'plugins/xterm/addons/fullscreen/fullscreen.js' %}"></script>
+<script src="{% static 'plugins/xterm/addons/fit/fit.js' %}"></script>
+<script src="{% static 'plugins/xterm/addons/attach/attach.js' %}"></script>
+<script src="{% static 'plugins/xterm/addons/terminado/terminado.js' %}"></script>
+<script src="{% static 'plugins/toastr/toastr.min.js' %}"></script>
+<script src="{% static 'plugins/bootbox/bootbox.js' %}"></script>
+
+<script type="application/javascript">
+  var currentTab;
+  var composeCount = 0;
+  //initilize tabs
+  $(function () {
+      //when ever any tab is clicked this method will be call
+     // Attach a click event to the element:
+      $("#myTab").on("click", "a", function (e) {
+          console.log("e: ", e);
+          e.preventDefault();
+          $(this).tab('show');
+          $currentTab = $(this);
+      });
+      //registerComposeButtonEvent();
+      registerCloseEvent();
+  });
+  // this method will register event on close icon on the tab..
+    function registerCloseEvent() {
+      $(".closeTab").click(function (e) {
+
+                         //there are multiple elements which has .closeTab icon so close the tab whose close icon is clicked
+                         var tabContentId = $(this).parent().attr("href");
+                         console.log("tabContentId: ", $(tabContentId));
+                         $(this).parent().parent().remove(); //remove li of tab
+                         $('#myTab a:last').tab('show'); // Select first tab
+
+                         $.ajax({
+                             type: "POST",
+                             url: '{% url "guacamole:sshterminalkill"%}',
+                             dataType: "json",
+                             data: {'channel_name':$(tabContentId).attr('channel_name')},
+                             success: function (data) {
+                                 console.log("post successful!!");
+                                 console.log("data: ", data);
+                                 if (data['status']){
+                                     toastr["success"](data['message']);
+                                 }
+                             },
+                             failure: function (errMsg) {
+                                 console.log("post failed!!");
+                                 console.log("errMsg: ", errMsg);
+                                 toastr["error"](errMsg);
+                             },
+                         });
+                         $(tabContentId).remove(); //remove respective tab content
+                     });
+                   }
+  //shows the tab with passed content div id..paramter
+  // tabid indicates the div where the content resides (the id of the correspondant tab-conetnt)
+  function showTab(tabId) {
+    $('#myTab a[href="#' + tabId + '"]').tab('show');
+  }
+  //return current active tab
+  function getCurrentTab() {
+    return currentTab;
+  }
+  //this will return element from current tab
+  //example : if there are two tabs having  textarea with same id or same class
+  // name then when $("#someId") whill return both the text area from both tabs
+  //to take care this situation we need get the element from current tab.
+  function getElement(selector) {
+    var tabContentId = $currentTab.attr("href");
+    return $("" + tabContentId).find("" + selector);
+  }
+  function removeCurrentTab() {
+    var tabContentId = $currentTab.attr("href");
+    $currentTab.parent().remove(); //remove li of tab
+    $('#myTab a:last').tab('show'); // Select first tab
+    $(tabContentId).remove(); //remove respective tab content
+    console.log("this is from removeCurrentTab");
+    console.log("tabContentId: ", tabContentId);
+
+  }
+</script>
+<script type="application/javascript">
+    var terminals = new Object;
+    Terminal.applyAddon(fullscreen);
+    Terminal.applyAddon(fit);
+    Terminal.applyAddon(attach);
+
+    function make_terminal(element, size, ws_url,ip,id) {
+        var term = new Terminal({
+            cols: size.cols,
+            rows: size.rows,
+            screenKeys: true,
+            useStyle: true,
+            cursorBlink: true,  // Blink the terminal's cursor
+        });
+        term.open(element, false);
+        term.fit();
+        term.focus();
+        // term.toggleFullscreen(true);
+        var ws = new WebSocket(ws_url);
+        console.log("ws",ws);
+        //set terminal width and height
+        function resize_terminal(term){
+          term.resize(term.cols, term.rows);
+          ws.send(JSON.stringify(["set_size", term.cols,term.rows, term.cols, term.rows]));
+          console.log(["set_size", term.cols,term.rows, term.cols, term.rows]);
+        }
+        ws.onopen = function (event) {
+          terminals[element.id] = ws;
+          console.log("i am inside ws.onopen ");
+          term.resize(term.cols, term.rows);
+          ws.send(JSON.stringify(["ip", ip,term.cols, term.rows, id]));
+          ws.send(JSON.stringify(["set_size",term.cols,term.rows, term.cols, term.rows]));
+          console.log(["ip", ip,term.cols, term.rows, id]);
+          console.log(["set_size",term.cols,term.rows, term.cols, term.rows]);
+          term.on('title', function (title) {
+                document.title = title;
+          });
+          term.attach(ws);
+          term._initialized = true;
+        };
+        console.log("this is after ws.onopen")
+        // console.log(socket: ws)
+        // console.log(term: term)
+        return {socket: ws, term: term};
+    }
+
+    var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
+    var ws_path = ws_scheme + '://' + window.location.host + '/ws/';
+</script>
+<script type='text/javascript'>
+  $('.buttonConnect').on('click', function() {
+    var tabId = $(this).closest('div').find('.servername').text();
+    var hostname = $(this).closest('div').find('.hostname').text();
+    var ip = $(this).closest('div').find('.ip').text();
+    var protocol = $(this).closest('div').find('.protocol').text();
+    var id = $(this).closest('div').find('.id').text();
+    console.log("hostname", hostname);
+    console.log("ip", ip);
+    console.log("protocol", protocol);
+    console.log("tabId", tabId);
+
+    if (protocol == "SSH-PASSWORD" || protocol == "SSH-KEY")
+    {
+        console.log("I am inside if loop");
+        if ($("#"+tabId).length <= 0){
+            $('.nav-tabs').append('<li class="nav-item"><a class="nav-link active" href="#' + tabId + '" role="tab">' + tabId + '<button type="button" class="close closeTab">×</button></a></li>');
+            $('.tab-content').append('<div class="tab-pane" id="' + tabId + '" role="tabpanel" ></div>');
+            showTab(tabId);
+            registerCloseEvent(protocol);
+            var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
+            var ws_path = ws_scheme + '://' + window.location.host + '/ws/';
+            console.log("ws_path", ws_path);
+            make_terminal(document.getElementById(tabId), {rows: 40, cols: 90}, ws_path, ip, id);
+            console.log("the terminal a has been built");
+        }else {
+            showTab(tabId);
+          }
+    }
+
+  });
+
+$('.buttonDisconnect').on('click', function() {
+  var tabId = $(this).closest('div').find('.servername').text();
+  var hostname = $(this).closest('div').find('.hostname').text();
+  var ip = $(this).closest('div').find('.ip').text();
+  var protocol = $(this).closest('div').find('.protocol').text();
+  console.log("hostname", hostname);
+  console.log("ip", ip);
+  console.log("protocol", protocol);
+  console.log("tabId", tabId);
+  if (protocol == "SSH-PASSWORD" || protocol == "SSH-KEY") {
+    if ($("#"+tabId).length >0){
+      $.ajax({
+        type: "POST",
+        url: '{% url "guacamole:sshterminalkill" %}',
+        dataType: "json",
+        data: {'channel_name':$("#"+tabId).attr('channel_name')},
+        success: function (data) {
+          if (data['status']){
+          toastr["success"](data['message']);
+          }
+        },
+        failure: function (errMsg) {
+          toastr["error"](errMsg);
+          },
+      });
+    }
+  }
+});
+</script>
+
+{%endblock%}
+
+
+ {%endblock%}

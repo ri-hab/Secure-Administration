@@ -1,0 +1,63 @@
+{% extends 'app_user/base.html'%}
+{% load static %}
+{%block content%}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/AdminLTE.min.css' %}">
+{% endblock %}
+<!-- ============================================================== -->
+<!-- Bread crumb and right sidebar toggle -->
+<!-- ============================================================== -->
+ <div class="row page-titles">
+     <div class="col-md-5 align-self-center">
+       <h3 class="text-themecolor"><a href='{%url "app_user:user_groups" username=user.username%}'>Groups</a></h3>
+     </div>
+     <div class="col-md-7 align-self-center">
+         <ol class="breadcrumb">
+             <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
+             <li class="breadcrumb-item active">Groups</li>
+         </ol>
+     </div>
+     <div class="">
+         <button class="right-side-toggle waves-effect waves-light btn-inverse btn btn-circle btn-sm pull-right m-l-10"><i class="ti-settings text-white"></i></button>
+     </div>
+ </div>
+ <!-- ============================================================== -->
+ <!-- End Bread crumb and right sidebar toggle -->
+ <!-- ============================================================== -->
+
+ <a class="btn btn-xs btn-success" data-toggle="modal" onclick="display()">Monitor</a>
+
+
+ {%block js%}
+ <script src="{% static 'admin/js/vendor/jquery/jquery.js' %}"></script>
+ <script src="{% static 'plugins/jQuery/jquery-2.2.3.min.js' %}"></script>
+ <script src="{% static 'js/app.min.js' %}"></script>
+ <script src="{% static 'plugins/jQuery/jquery-3.3.1.min.js' %}"></script>
+ <script src="{% static 'plugins/jquery-ui/jquery-ui.min.js' %}"></script>
+ <script src="{% static 'plugins/bootstrap/js/bootstrap.js' %}"></script>
+ <script src="{% static 'plugins/bootstrap-dialog/js/bootstrap-dialog.js' %}"></script>
+
+ <script>
+ function display() {
+   console.log("hi")
+   BootstrapDialog.show({
+    title: 'Default Title',
+    message: 'Click buttons below.',
+    buttons: [{
+        label: 'Title 1',
+        action: function(dialog) {
+            dialog.setTitle('Title 1');
+        }
+    }, {
+        label: 'Title 2',
+        action: function(dialog) {
+            dialog.setTitle('Title 2');
+        }
+    }]
+});
+ }
+ </script>
+
+ {%endblock%}
+
+{%endblock%}

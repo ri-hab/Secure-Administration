@@ -1,0 +1,266 @@
+{% extends 'app_user/base.html'%}
+{% load static %}
+{%block content%}
+{% block css %}
+<link rel="stylesheet" href="{% static 'plugins/jquery-ui/jquery-ui.min.css'%}">
+<link rel="stylesheet" href='{% static "plugins/toastr/toastr.css" %}'/>
+<!-- <link rel="stylesheet" href="{% static 'css/AdminLTE.min.css' %}"> -->
+{% endblock %}
+<!-- ============================================================== -->
+<!-- Bread crumb and right sidebar toggle -->
+<!-- ============================================================== -->
+ <div class="row page-titles">
+     <div class="col-md-5 align-self-center">
+         <h3 class="text-themecolor"><a href='{%url "app_user:telnet_connect" username=user.username%}'>TELNET Connections</a></h3>
+     </div>
+     <div class="col-md-7 align-self-center">
+         <ol class="breadcrumb">
+             <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
+             <li class="breadcrumb-item">Terminal Access</li>
+             <li class="breadcrumb-item active">TELNET Connections</li>
+         </ol>
+     </div>
+     <div class="">
+         <button class="right-side-toggle waves-effect waves-light btn-inverse btn btn-circle btn-sm pull-right m-l-10"><i class="ti-settings text-white"></i></button>
+     </div>
+ </div>
+ <!-- ============================================================== -->
+ <!-- End Bread crumb and right sidebar toggle -->
+ <!-- ============================================================== -->
+ <!-- ============================================================== -->
+     <!-- Container fluid  -->
+     <!-- ============================================================== -->
+     <div class="container-fluid">
+         <!-- ============================================================== -->
+         <!-- Start Page Content -->
+         <!-- ============================================================== -->
+         <!-- Row -->
+         <div class="row">
+           <div class="col-lg-3">
+                 <div class="card">
+                     <div class="card-body bg-inverse">
+                         <h4 class="text-white card-title" style="text-align:center;">TELNET Servers list</h4>
+                     </div>
+                     <div class="card-body">
+                         <div class="message-box contact-box">
+                             <div class="message-widget contact-widget">
+                                 <!-- Message -->
+                                 <!-- Message -->
+                                 {% for  server in servers%}
+                                 {%if server.credential.user == user%}
+                                  {%if server.credential.protocol == 'telnet'%}
+
+                                 <a>
+                                   <div class="p-l-20">
+                                       <h4 class="font-medium servername" style="color:#1e88e5;">{{server.name}}</h4>
+                                       <h6>Hostname: <span class="hostname" style="color:grey;">{{server.hostname}}</span></h6>
+                                       <h6>IP Address: <span class="ip" style="color:grey;">{{server.ip}}</span></h6>
+                                       <h6>Protocol: <span class="protocol" style="color:grey;">{{server.credential.protocol|upper}}</span></h6>
+                                       <h6>User: <span style="color:grey;">{{server.credential.user}}</span></h6>
+                                       <h6 style="display:None;">Id: <span class="id" style="color:grey;display:None;">{{server.id}}</span></h6>
+                                        <button type="button" class="buttonConnect btn waves-effect waves-light btn-rounded btn-outline-success m-b-10">Connect</button>
+                                        <button type="button" class="buttonDisconnect btn waves-effect waves-light btn-rounded btn-outline-danger">Disconnect</button>
+
+                                   </div>
+                                 </a>
+                                 {%endif%}
+                                 {%endif%}
+                                 {%endfor%}
+                             </div>
+                         </div>
+                     </div>
+                   </div>
+                 </div>
+
+                 <div class="col-lg-9">
+                 <div class="card">
+
+                           <div class="card-body p-b-0">
+
+                               <h4 class="card-title" style="text-align:center">TELNET Connections</h4>
+                                 <hr>
+                           <!-- Nav tabs -->
+                           <ul class="nav nav-tabs customtab" id="myTab" role="tablist">
+                               <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#home2" role="tab"><span class="hidden-sm-up"><i class="ti-home"></i></span><span class="hidden-xs-down">Home </span>
+                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close close closeTab"> ×</button>
+
+                               </a>
+                             </li>
+                           </ul>
+                           <!-- Tab panes -->
+                           <div class="tab-content">
+                               <div class="tab-pane active" id="home2" role="tabpanel">
+                                   <div class="p-20">
+
+                                   </div>
+
+                           </div>
+
+                         </div>
+                       </div>
+
+                       </div>
+                       <!-- end <div class="card"> -->
+                          </div>
+                          <!-- end <div class="col-lg-9"> -->
+
+             </div>
+        <!-- Row -->
+
+
+         <!-- ============================================================== -->
+         <!-- End PAge Content -->
+         <!-- ============================================================== -->
+
+     </div>
+     <!-- ============================================================== -->
+     <!-- End Container fluid  -->
+     <!-- ============================================================== -->
+     {% block js %}
+     <script src="{% static 'plugins/jQuery/jquery-2.2.3.min.js' %}"></script>
+     <script src="{% static 'plugins/jquery-ui/jquery-ui.min.js' %}"></script>
+     <script src="{% static 'plugins/jquery.fullscreen/jquery.fullscreen.min.js' %}"></script>
+     <script src="{% static 'js/app.min.js' %}"></script>
+     <script src="{% static 'plugins/toastr/toastr.min.js' %}"></script>
+     <script src="{% static 'plugins/bootbox/bootbox.js' %}"></script>
+     <script src="{% static 'guacamole/plugins/guacamole/all.min.js' %}"></script>
+     <script type='application/javascript'>
+       var currentTab;
+       var composeCount = 0;
+       //initilize tabs
+       $(function (){
+         //when ever any tab is clicked this method will be call
+         // Attach a click event to a the element:
+         $("#myTab").on("click", "a", function (e) {
+           e.preventDefault();
+           $(this).tab('show');
+           $currentTab = $(this);
+           });
+         //registerComposeButtonEvent();
+         registerCloseEvent();
+         });
+
+           //this method will register event on close icon on the tab..
+           function registerCloseEvent() {
+
+               $(".closeTab").click(function () {
+
+                   //there are multiple elements which has .closeTab icon so close the tab whose close icon is clicked
+                   var tabContentId = $(this).parent().attr("href");
+                   $(this).parent().parent().remove(); //remove li of tab
+                   $('#myTab a:last').tab('show'); // Select first tab
+
+                   $.ajax({
+                       type: "POST",
+                       url: '{% url "guacamole:sshterminalkill"%}',
+                       dataType: "json",
+                       data: {'channel_name':$(tabContentId).attr('channel_name')},
+                       success: function (data) {
+
+                           if (data['status']){
+                               toastr["success"](data['message']);
+                           }
+                       },
+                       failure: function (errMsg) {
+                           toastr["error"](errMsg);
+                       },
+                   });
+                   $(tabContentId).remove(); //remove respective tab content
+               });
+           }
+
+
+               //shows the tab with passed content div id..paramter
+               // tabid indicates the div where the content resides
+               function showTab(tabId) {
+                   $('#myTab a[href="#' + tabId + '"]').tab('show');
+               }
+               //return current active tab
+               function getCurrentTab() {
+                   return currentTab;
+               }
+
+
+               //this will return element from current tab
+               //example : if there are two tabs having  textarea with same id or same class name then when $("#someId") whill return both the text area from both tabs
+               //to take care this situation we need get the element from current tab.
+               function getElement(selector) {
+                   var tabContentId = $currentTab.attr("href");
+                   return $("" + tabContentId).find("" + selector);
+
+               }
+
+
+               function removeCurrentTab() {
+                   var tabContentId = $currentTab.attr("href");
+                   $currentTab.parent().remove(); //remove li of tab
+                   $('#myTab a:last').tab('show'); // Select first tab
+                   $(tabContentId).remove(); //remove respective tab content
+               }
+
+       </script>
+
+
+<script type='text/javascript'>
+
+$('.buttonConnect').on('click', function() {
+  var tabId = $(this).closest('div').find('.servername').text();
+  var hostname = $(this).closest('div').find('.hostname').text();
+  var ip = $(this).closest('div').find('.ip').text();
+  var id = $(this).closest('div').find('.id').text();
+  var protocol = $(this).closest('div').find('.protocol').text();
+  console.log("hostname", hostname);
+  console.log("ip", ip);
+  console.log("protocol", protocol);
+  if (protocol == "TELNET"){
+    if ($("#"+tabId).length <= 0){
+      console.log("I am inside if loop");
+      console.log("length: ", $("#"+tabId).length);
+      $('.nav-tabs').append('<li class="nav-item"><a class="nav-link" href="#' + tabId + '" role="tab">' + tabId + '<button type="button" class="close closeTab">×</button></a></li>');
+      console.log("id server: ", id);
+      $('.tab-content').append('<div class="tab-pane" id="' + tabId + '" role="tabpanel" ><iframe src="/guacamole/' + id +'/" frameborder="0" scrolling="no" onload="this.height=780;this.width=1030;this.contentWindow.focus();" onmouseover="this.contentWindow.focus();"></iframe></div>');
+      showTab(tabId);
+      registerCloseEvent();
+  }else {
+      showTab(tabId);
+  }
+}
+
+});
+
+$('.buttonDisconnectConnect').on('click', function() {
+  var tabId = $(this).closest('div').find('.servername').text();
+  var hostname = $(this).closest('div').find('.hostname').text();
+  var ip = $(this).closest('div').find('.ip').text();
+  var protocol = $(this).closest('div').find('.protocol').text();
+  console.log("hostname", hostname);
+  console.log("ip", ip);
+  console.log("protocol", protocol);
+  console.log("tabId", tabId);
+  if (protocol == "TELNET") {
+    if ($("#"+tabId).length >0){
+      $.ajax({
+        type: "POST",
+        url: '{% url "guacamole:sshterminalkill"%}',
+        dataType: "json",
+        data: {'channel_name':$("#"+tabId).attr('channel_name')},
+        success: function (data) {
+          if (data['status']){
+          toastr["success"](data['message']);
+          }
+        },
+        failure: function (errMsg) {
+          toastr["error"](errMsg);
+          },
+      });
+    }
+  }
+
+});
+</script>
+
+
+
+     {%endblock%}
+
+ {%endblock%}

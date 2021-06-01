@@ -1,0 +1,14 @@
+{% load static %}
+<html>
+<head>
+    <style>
+      body { background-color: #666; }
+    </style>
+  <link rel="stylesheet" type="text/css" href="{% static 'plugins/asciinema/asciinema-player.css' %}">
+</head>
+<body>
+  <asciinema-player src="{{logpath}}"></asciinema-player>
+  <script src="{% static 'plugins/asciinema/asciinema-player.js' %}"></script>
+
+</body>
+</html>

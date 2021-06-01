@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'app_auditor/images/favicons.png' %}">
+    <title>3S Jump Server</title>
+    <!-- Bootstrap Core CSS -->
+    <link href="{% static 'app_auditor/plugins/bootstrap/css/bootstrap.min.css'%}" rel="stylesheet">
+    <link rel="stylesheet" href='{% static "plugins/toastr/toastr.css" %}'/>
+    <link rel="stylesheet" href="{% static 'css/AdminLTE.min.css' %}">
+
+    <!-- chartist CSS -->
+    <link href="{% static 'app_auditor/plugins/chartist-js/dist/chartist.min.css'%}" rel="stylesheet">
+    <link href="{% static 'app_auditor/plugins/chartist-js/dist/chartist-init.css'%}" rel="stylesheet">
+    <link href="{% static 'app_auditor/plugins/chartist-plugin-tooltip-master/dist/chartist-plugin-tooltip.css'%}" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="{% static 'app_auditor/css/style.css'%}" rel="stylesheet">
+    <!-- You can change the theme colors from here -->
+    <link href="{% static 'app_auditor/css/colors/blue-dark.css'%}" id="theme" rel="stylesheet">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+</head>
+
+<body class="fix-header fix-sidebar card-no-border">
+    <!-- ============================================================== -->
+    <!-- Preloader - style you can find in spinners.css -->
+    <!-- ============================================================== -->
+    <div class="preloader">
+        <svg class="circular" viewBox="25 25 50 50">
+            <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" /> </svg>
+    </div>
+    <!-- ============================================================== -->
+    <!-- Main wrapper - style you can find in pages.scss -->
+    <!-- ============================================================== -->
+    <div id="main-wrapper">
+        <!-- ============================================================== -->
+        <!-- Topbar header - style you can find in pages.scss -->
+        <!-- ============================================================== -->
+        <header class="topbar">
+            <nav class="navbar top-navbar navbar-expand-md navbar-light">
+                <!-- ============================================================== -->
+                <!-- Logo -->
+                <!-- ============================================================== -->
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="{%url 'app_auditor:switcher_auditor' username=user.username%}">
+                        <!-- Logo icon --><b>
+                            <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
+                            <!-- Dark Logo icon -->
+                            <img src="{% static 'app_auditor/images/favicons.png'%}" alt="3S_logo" class="dark-logo" />
+                            <!-- Light Logo icon -->
+                            <img src="{% static 'app_auditor/images/favicons.png'%}" alt="3S_logo" class="light-logo" />
+                        </b>
+                        <!--End Logo icon -->
+                        <!-- Logo text --><span>
+                         <!-- dark Logo text -->
+                         <h5 class="dark-logo">JumpServer</h5>
+                         <!-- Light Logo text -->
+                         <h5 class="light-logo">JumpServer</h5></span></a>
+
+                </div>
+                <!-- ============================================================== -->
+                <!-- End Logo -->
+                <!-- ============================================================== -->
+                <div class="navbar-collapse">
+                    <!-- ============================================================== -->
+                    <!-- toggle and nav items -->
+                    <!-- ============================================================== -->
+                    <ul class="navbar-nav mr-auto mt-md-0">
+                        <!-- This is  -->
+                        <li class="nav-item"> <a class="nav-link nav-toggler hidden-md-up text-muted waves-effect waves-dark" href="javascript:void(0)"><i class="mdi mdi-menu"></i></a> </li>
+                        <li class="nav-item m-l-10"> <a class="nav-link sidebartoggler hidden-sm-down text-muted waves-effect waves-dark" href="javascript:void(0)"><i class="ti-menu"></i></a> </li>
+                        <!-- ============================================================== -->
+                        <!-- Comment -->
+                        <!-- ============================================================== -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-muted text-muted waves-effect waves-dark" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="mdi mdi-message"></i>
+                                <div class="notify"> <span class="heartbit"></span> <span class="point"></span> </div>
+                            </a>
+                            <div class="dropdown-menu mailbox animated slideInUp">
+                                <ul>
+                                    <li>
+                                        <div class="drop-title">Notifications</div>
+                                    </li>
+                                    <li>
+                                        <div class="message-center">
+                                            <!-- Message -->
+                                            <a href="#">
+                                                <div class="btn btn-danger btn-circle"><i class="fa fa-link"></i></div>
+                                                <div class="mail-contnet">
+                                                    <h5>Luanch Admin</h5> <span class="mail-desc">Just see the my new admin!</span> <span class="time">9:30 AM</span> </div>
+                                            </a>
+                                            <!-- Message -->
+                                            <a href="#">
+                                                <div class="btn btn-success btn-circle"><i class="ti-calendar"></i></div>
+                                                <div class="mail-contnet">
+                                                    <h5>Event today</h5> <span class="mail-desc">Just a reminder that you have event</span> <span class="time">9:10 AM</span> </div>
+                                            </a>
+                                            <!-- Message -->
+                                            <a href="#">
+                                                <div class="btn btn-info btn-circle"><i class="ti-settings"></i></div>
+                                                <div class="mail-contnet">
+                                                    <h5>Settings</h5> <span class="mail-desc">You can customize this template as you want</span> <span class="time">9:08 AM</span> </div>
+                                            </a>
+                                            <!-- Message -->
+                                            <a href="#">
+                                                <div class="btn btn-primary btn-circle"><i class="ti-user"></i></div>
+                                                <div class="mail-contnet">
+                                                    <h5>Pavan kumar</h5> <span class="mail-desc">Just see the my admin!</span> <span class="time">9:02 AM</span> </div>
+                                            </a>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <a class="nav-link text-center" href="javascript:void(0);"> <strong>Check all notifications</strong> <i class="fa fa-angle-right"></i> </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                        <!-- ============================================================== -->
+                        <!-- End Comment -->
+                        <!-- ============================================================== -->
+                        <!-- ============================================================== -->
+                        <!-- Messages -->
+                        <!-- ============================================================== -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark" href="#" id="2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="mdi mdi-email"></i>
+                                <div class="notify"> <span class="heartbit"></span> <span class="point"></span> </div>
+                            </a>
+                            <div class="dropdown-menu mailbox animated slideInUp" aria-labelledby="2">
+                                <ul>
+                                    <li>
+                                        <div class="drop-title">You have 4 new messages</div>
+                                    </li>
+                                    <li>
+                                        <div class="message-center">
+                                            <!-- Message -->
+                                            <a href="#">
+                                                <div class="user-img"> <img src="{% static 'app_auditor/images/users/1.jpg'%}" alt="user" class="img-circle"> <span class="profile-status online pull-right"></span> </div>
+                                                <div class="mail-contnet">
+                                                    <h5>Pavan kumar</h5> <span class="mail-desc">Just see the my admin!</span> <span class="time">9:30 AM</span> </div>
+                                            </a>
+                                            <!-- Message -->
+                                            <a href="#">
+                                                <div class="user-img"> <img src="{% static 'app_auditor/images/users/2.jpg'%}" alt="user" class="img-circle"> <span class="profile-status busy pull-right"></span> </div>
+                                                <div class="mail-contnet">
+                                                    <h5>Sonu Nigam</h5> <span class="mail-desc">I've sung a song! See you at</span> <span class="time">9:10 AM</span> </div>
+                                            </a>
+                                            <!-- Message -->
+                                            <a href="#">
+                                                <div class="user-img"> <img src="{% static 'app_auditor/images/users/3.jpg'%}" alt="user" class="img-circle"> <span class="profile-status away pull-right"></span> </div>
+                                                <div class="mail-contnet">
+                                                    <h5>Arijit Sinh</h5> <span class="mail-desc">I am a singer!</span> <span class="time">9:08 AM</span> </div>
+                                            </a>
+                                            <!-- Message -->
+                                            <a href="#">
+                                                <div class="user-img"> <img src="{% static 'app_auditor/images/users/4.jpg'%}" alt="user" class="img-circle"> <span class="profile-status offline pull-right"></span> </div>
+                                                <div class="mail-contnet">
+                                                    <h5>Pavan kumar</h5> <span class="mail-desc">Just see the my admin!</span> <span class="time">9:02 AM</span> </div>
+                                            </a>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <a class="nav-link text-center" href="javascript:void(0);"> <strong>See all e-Mails</strong> <i class="fa fa-angle-right"></i> </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                        <!-- ============================================================== -->
+                        <!-- End Messages -->
+                        <!-- ============================================================== -->
+                    </ul>
+                    <!-- ============================================================== -->
+                    <!-- User profile and search -->
+                    <!-- ============================================================== -->
+                    <ul class="navbar-nav my-lg-0">
+                        <!-- ============================================================== -->
+                        <!-- Search -->
+                        <!-- ============================================================== -->
+                        <li class="nav-item hidden-sm-down search-box"> <a class="nav-link hidden-sm-down text-muted waves-effect waves-dark" href="javascript:void(0)"><i class="ti-search"></i></a>
+                            <form class="app-search">
+                                <input type="text" class="form-control" placeholder="Search & enter"> <a class="srh-btn"><i class="ti-close"></i></a> </form>
+                        </li>
+                        <!-- ============================================================== -->
+                        <!-- Language -->
+                        <!-- ============================================================== -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="flag-icon flag-icon-tn"></i></a>
+                            <div class="dropdown-menu dropdown-menu-right scale-up"> <a class="dropdown-item" href="#"><i class="flag-icon flag-icon-in"></i> India</a> <a class="dropdown-item" href="#"><i class="flag-icon flag-icon-fr"></i> French</a> <a class="dropdown-item" href="#"><i class="flag-icon flag-icon-cn"></i> China</a> <a class="dropdown-item" href="#"><i class="flag-icon flag-icon-de"></i> Dutch</a> </div>
+                        </li>
+                        <!-- ============================================================== -->
+                        <!-- Profile -->
+                        <!-- ============================================================== -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{% if user.image %}<img src="{{ user.image.url }}" width="50" alt="user" class="profile-pic" /></a>{% endif %}
+                            <!-- <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="{% static "app_auditor/images/users/1.jpg"%}" alt="user" class="profile-pic" /></a> -->
+                            <div class="dropdown-menu dropdown-menu-right scale-up">
+                                <ul class="dropdown-user">
+                                    <li>
+                                        <div class="dw-user-box">
+                                            <div class="u-img">{% if user.image %}<img src="{{ user.image.url }}" alt="user"></div>{% endif %}
+                                            <div class="u-text">
+                                                <h4>{{user.username }}</h4>
+                                                <p class="text-muted">{{user.email}}</p><a href="pages-profile.html" class="btn btn-rounded btn-danger btn-sm">View Profile</a></div>
+                                        </div>
+                                    </li>
+                                    <li role="separator" class="divider"></li>
+                                    <li><a href="#"><i class="ti-user"></i> My Profile</a></li>
+                                    <li><a href="#"><i class="ti-wallet"></i> My Balance</a></li>
+                                    <li><a href="#"><i class="ti-email"></i> Inbox</a></li>
+                                    <li role="separator" class="divider"></li>
+                                    <li><a href="#"><i class="ti-settings"></i> Account Setting</a></li>
+                                    <li role="separator" class="divider"></li>
+                                    {%if user.is_authenticated%}
+                                    <li><a href="{%url 'index'%}"><i class="fa fa-power-off"></i> Logout</a></li>
+                                    {%endif%}
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <!-- ============================================================== -->
+        <!-- End Topbar header -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- Left Sidebar - style you can find in sidebar.scss  -->
+        <!-- ============================================================== -->
+        <aside class="left-sidebar">
+            <!-- Sidebar scroll-->
+            <div class="scroll-sidebar">
+                <!-- User profile -->
+                <div class="user-profile">
+                    <!-- User profile image -->
+                    <div class="profile-img">{% if user.image %}<img src="{{ user.image.url }}" alt="user">{% endif %}
+                        <div class="notify setpos"> <span class="heartbit"></span> <span class="point"></span> </div>
+                    </div>
+                    <!-- User profile text-->
+                    <div class="profile-text">
+                        <h5>{{user.first_name}} {{user.last_name}}</h5>
+                        <a href="#" class="dropdown-toggle u-dropdown" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true"><i class="mdi mdi-settings"></i></a>
+                        <a href="app-email.html" class="" data-toggle="tooltip" title="Email"><i class="mdi mdi-gmail"></i></a>
+                        {%if user.is_authenticated%}
+                        <a href="{%url 'index'%}" class="" data-toggle="tooltip" title="Logout"><i class="mdi mdi-power"></i></a>
+                        {%endif%}
+                        <div class="dropdown-menu animated flipInY">
+                            <!-- text-->
+                            <a href="#" class="dropdown-item"><i class="ti-user"></i> My Profile</a>
+                            <!-- text-->
+                            <a href="#" class="dropdown-item"><i class="ti-wallet"></i> My Balance</a>
+                            <!-- text-->
+                            <a href="#" class="dropdown-item"><i class="ti-email"></i> Inbox</a>
+                            <!-- text-->
+                            <div class="dropdown-divider"></div>
+                            <!-- text-->
+                            <a href="#" class="dropdown-item"><i class="ti-settings"></i> Account Setting</a>
+                            <!-- text-->
+                            <div class="dropdown-divider"></div>
+                            <!-- text-->
+                            {%if user.is_authenticated%}
+                            <a href="{%url 'index'%}" class="dropdown-item"><i class="fa fa-power-off"></i> Logout</a>
+                            {%endif%}
+                            <!-- text-->
+                        </div>
+                    </div>
+                </div>
+                <!-- End User profile text-->
+                <!-- Sidebar navigation-->
+                <nav class="sidebar-nav">
+                    <ul id="sidebarnav">
+                        <li class="nav-devider"></li>
+                  <li class="nav-small-cap">PERSONAL</li>
+
+                        <li> <a class="waves-effect waves-dark" href="{%url 'app_auditor:auditor_profile' username=user.username%}"><i class="mdi mdi-gauge"></i><span class="hide-menu">Profile</span></a>
+                        </li>
+
+                  <li class="nav-small-cap">Sessions Records</li>
+
+                        <li> <a class="waves-effect waves-dark" href="{%url 'app_auditor:ssh_record' username=user.username%}" aria-expanded="false"><i class="mdi mdi-menu"></i><span class="hide-menu">SSH Records</span></a>
+
+                        </li>
+
+                        <li> <a class="waves-effect waves-dark" href="{%url 'app_auditor:telnet_record' username=user.username%}" aria-expanded="false"><i class="mdi mdi-file"></i><span class="hide-menu">TELNET Records</span></a>
+
+                        </li>
+
+                        <li> <a class="waves-effect waves-dark" href="{%url 'app_auditor:rdp_record' username=user.username%}" aria-expanded="false"><i class="mdi mdi-book-multiple"></i><span class="hide-menu">RDP Records</span></a>
+                        </li>
+
+                        <li> <a class="waves-effect waves-dark" href="{%url 'app_auditor:vnc_record' username=user.username%}" aria-expanded="false"><i class="mdi mdi-arrange-send-backward"></i><span class="hide-menu">VNC Records</span></a>
+                        </li>
+                        <li class="nav-small-cap">Real Time Monitoring</li>
+                        <li> <a class="waves-effect waves-dark" href="{%url 'app_auditor:ssh_connection' username=user.username%}" aria-expanded="false"><i class="mdi mdi-menu"></i><span class="hide-menu">SSH Connections</span></a>
+                        </li>
+                        <li> <a class="waves-effect waves-dark" href="{%url 'app_auditor:telnet_connection' username=user.username%}" aria-expanded="false"><i class="mdi mdi-file"></i><span class="hide-menu">TELNET Connections</span></a>
+                        </li>
+                        <li> <a class="waves-effect waves-dark" href="{%url 'app_auditor:rdp_connection' username=user.username%}" aria-expanded="false"><i class="mdi mdi-book-multiple"></i><span class="hide-menu">RDP Connections</span></a>
+                        </li>
+                        <li> <a class="waves-effect waves-dark" href="{%url 'app_auditor:vnc_connection' username=user.username%}" aria-expanded="false"><i class="mdi mdi-arrange-send-backward"></i><span class="hide-menu">VNC Connections</span></a>
+                        </li>
+
+
+                </ul>
+
+                </nav>
+                <!-- End Sidebar navigation -->
+            </div>
+            <!-- End Sidebar scroll-->
+        </aside>
+        <!-- ============================================================== -->
+        <!-- End Left Sidebar - style you can find in sidebar.scss  -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- Page wrapper  -->
+        <!-- ============================================================== -->
+        <div class="page-wrapper">
+
+          {% block content %}
+
+
+          {% endblock %}
+            <!-- ============================================================== -->
+            <!-- footer -->
+            <!-- ============================================================== -->
+            <footer class="footer" style="text-align: center;">
+                © Copyright 3S © 2019 All rights reserved
+            </footer>
+            <!-- ============================================================== -->
+            <!-- End footer -->
+            <!-- ============================================================== -->
+        </div>
+        <!-- ============================================================== -->
+        <!-- End Page wrapper  -->
+        <!-- ============================================================== -->
+    </div>
+    <!-- ============================================================== -->
+    <!-- End Wrapper -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- All Jquery -->
+    <!-- ============================================================== -->
+    <script src="{% static 'app_auditor/plugins/jquery/jquery.min.js'%}"></script>
+    <script src="{% static 'js/app.min.js' %}"></script>
+    <!-- Bootstrap tether Core JavaScript -->
+    <script src="{% static 'app_auditor/plugins/bootstrap/js/popper.min.js'%}"></script>
+    <script src="{% static 'app_auditor/plugins/bootstrap/js/bootstrap.min.js'%}"></script>
+    <!-- slimscrollbar scrollbar JavaScript -->
+    <script src="{% static 'app_auditor/js/jquery.slimscroll.js'%}"></script>
+    <!--Wave Effects -->
+    <script src='{% static "app_auditor/js/waves.js"%}'></script>
+    <!--Menu sidebar -->
+    <script src='{% static "app_auditor/js/sidebarmenu.js"%}'></script>
+    <!--stickey kit -->
+    <script src="{% static 'app_auditor/plugins/sticky-kit-master/dist/sticky-kit.min.js'%}"></script>
+    <script src="{% static 'app_auditor/plugins/sparkline/jquery.sparkline.min.js'%}"></script>
+    <!--Custom JavaScript -->
+    <script src="{% static 'app_auditor/js/custom.min.js'%}"></script>
+    <!-- ============================================================== -->
+    <!-- This page plugins -->
+    <!-- ============================================================== -->
+    <script src='{% static "app_auditor/plugins/skycons/skycons.js"%}'></script>
+    <!-- chartist chart -->
+    <script src="{% static 'app_auditor/plugins/chartist-js/dist/chartist.min.js'%}"></script>
+    <script src="{% static 'app_auditor/plugins/chartist-plugin-tooltip-master/dist/chartist-plugin-tooltip.min.js'%}"></script>
+    <script src="{% static 'plugins/toastr/toastr.min.js' %}"></script>
+    <script src='{% static "app_auditor/js/dashboard3.js"%}'></script>
+    <!-- ============================================================== -->
+    <!-- Style switcher -->
+    <!-- ============================================================== -->
+    <script src='{% static "app_auditor/plugins/styleswitcher/jQuery.style.switcher.js"%}'></script>
+    <script>
+
+    function getCookie(name) {
+    	var cookieValue = null;
+    	if (document.cookie && document.cookie !== '') {
+    		var cookies = document.cookie.split(';');
+    		for (var i = 0; i < cookies.length; i++) {
+    			var cookie = jQuery.trim(cookies[i]);
+    			// Does this cookie string begin with the name we want?
+    			if (cookie.substring(0, name.length + 1) === (name + '=')) {
+    				cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+    				break;
+    			}
+    		}
+    	}
+    	return cookieValue;
+    }
+    var csrftoken = getCookie('csrftoken');
+    function csrfSafeMethod(method) {
+    	// these HTTP methods do not require CSRF protection
+    	return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
+    $.ajaxSetup({
+    	beforeSend: function(xhr, settings) {
+    		if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+    			xhr.setRequestHeader("X-CSRFToken", csrftoken);
+    		}
+    	}
+    });
+
+
+    toastr.options = {
+        "closeButton": false,
+        "debug": false,
+        "newestOnTop": false,
+        "progressBar": false,
+        "positionClass": "toast-top-center",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    }
+    </script>
+</body>
+</html>

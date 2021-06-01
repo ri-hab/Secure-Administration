@@ -1,0 +1,84 @@
+{%extends "app_admin/base.html"%}
+{% load static %}
+{%block content%}
+                      <!-- Row -->
+                      <div class="row page-titles" style="background:url('../../static/app_user/images/background/background.png') no-repeat center top;">
+                          <div class="col-lg-12 text-center">
+                              <h1 class="m-t-30">{{user.first_name}} {{user.last_name}}</h1>
+                              <h5 class="text-muted m-b-30 text-info"><i class="ti-pin"></i>{{user.username}}</h5>
+                          </div>
+                      </div>
+                      <!-- Row -->
+                      <!-- ============================================================== -->
+                      <!-- Container fluid  -->
+                      <!-- ============================================================== -->
+                      <div class="container-fluid">
+                          <!-- ============================================================== -->
+                          <!-- Start Page Content -->
+                          <!-- ============================================================== -->
+                          <!-- Row -->
+                          <div class="row">
+                              <!-- Column -->
+                              <div class="col-lg-8 col-md-12">
+                                  <div class="card">
+                                      <div class="card-body">
+                                        <br>
+                                        <br>
+                                        <br>
+                                        <br>
+                                        <br>
+                                          <h1 class="card-title text-center">Welcome to 3S Jump Server</h1>
+                                          <h4 class="m-t-20 card-title text-info">We are thrilled that you have joined us!<span style="color:white;"> We hope you enjoy your experience with us.</span></h4>
+
+                                          <!-- <h4 style="float:right;">3S Jump Server Team</h4> -->
+
+                                          <p class="m-t-20" style="float:right;">
+                                          3S Jump Server Team
+                                        </p>
+                                          <br>
+                                          <br>
+                                          <br>
+                                          <br>
+                                          <br>
+                                          <br>
+                                      </div>
+                                  </div>
+                              </div>
+
+                              <!-- Column -->
+                              <div class="col-lg-4">
+                                  <!-- Column -->
+                                    <div class="card"> <img class="card-img-top" src="{% static 'app_user/images/background/back.png'%}" alt="Card image cap" style="max-height:165px;">
+                                      <div class="card-body little-profile text-center">
+                                          <div class="pro-img">{% if user.image %}<img src="{{ user.image.url }}" alt="user" /></div>{% endif %}
+                                          <h3 class="m-b-0">{{user.first_name}} {{user.last_name}}</h3>
+                                            <p>{{user.email}}</p>
+                                           <p>{{user.type}}</p>
+                                           {%if user.is_authenticated%}
+                                          <a href="{%url 'index'%}" class="m-t-10 waves-effect waves-dark btn btn-outline-info btn-md btn-rounded">Log out</a>
+                                          {%endif%}
+                                          <div class="row text-center m-t-20">
+                                              <div class="col-lg-4 col-md-4 m-t-20">
+                                                  <h3 class="m-b-0 font-light">10</h3><small>Groups</small></div>
+                                              <div class="col-lg-4 col-md-4 m-t-20">
+                                                  <h3 class="m-b-0 font-light">23</h3><small>Items</small></div>
+                                              <div class="col-lg-4 col-md-4 m-t-20">
+                                                  <h3 class="m-b-0 font-light">60</h3><small>Connect</small></div>
+                                              <div class="col-md-12 m-b-10"></div>
+                                          </div>
+                                      </div>
+                                  </div>
+                                  <!-- Column -->
+                              </div>
+                              <!-- Column -->
+                          </div>
+                          <!-- Row -->
+                        <!-- ============================================================== -->
+                          <!-- End Page Content -->
+                          <!-- ============================================================== -->
+                      </div>
+                      <!-- ============================================================== -->
+                      <!-- End Container fluid  -->
+                      <!-- ============================================================== -->
+
+  {% endblock%}

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+{% load static%}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Guacamole monitor</title>
+
+    <link rel="stylesheet" type="text/css" href="{% static 'guacamole/plugins/sweetalert/sweetalert2.min.css' %}">
+</head>
+<body>
+<!--<h1>Guacamole Remote Desktop</h1>-->
+<!-- Guacamole -->
+<script type="text/javascript" src="{% static 'guacamole/plugins/guacamole/all.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'guacamole/plugins/sweetalert/sweetalert2.all.min.js' %}"></script>
+
+<!-- Display -->
+<div id="display"></div>
+
+<!-- Init -->
+<script type="text/javascript">
+      // // convert unicode
+      // function encodeUnicode(str) {
+      // var res = [];
+      // for ( var i=0; i<str.length; i++ ) {
+      // res[i] = ( "00" + str.charCodeAt(i).toString(16) ).slice(-4);
+      // }
+      // return "\\u" + res.join("\\u");
+      // }
+      //
+      // // decode unicode
+      // function decodeUnicode(str) {
+      // str = str.replace(/\\/g, "%");
+      // return unescape(str);
+      // }
+    // Get display div from document
+    var display = document.getElementById("display");
+
+    // Instantiate client, using an HTTP tunnel for communications.
+    //http://guacamole.apache.org/doc/guacamole-common-js/Guacamole.WebSocketTunnel.html
+    var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
+    var ws_path = ws_scheme + '://' + window.location.host + '/guacamolemonitor/{{object.id}}/';
+    console.log('{{object.id}}');
+    console.log(ws_path);
+    var tunnel = new Guacamole.WebSocketTunnel(ws_path);
+    var guac = new Guacamole.Client(
+       // new Guacamole.HTTPTunnel("tunnel")
+      tunnel
+    );
+
+    // Add client to display div
+    display.appendChild(guac.getDisplay().getElement());
+
+    // Error handler
+    guac.onerror = function(error) {
+        console.log(error);
+    };
+
+    // Connect
+    guac.connect();
+
+    // Disconnect on close
+    window.onunload = function() {
+        guac.disconnect();
+    }
+
+
+    //state change
+    guac.onstatechange = function(state){
+        if (state == 5){
+            //alert closed
+            //var STATE_IDLE          = 0;
+            //var STATE_CONNECTING    = 1;
+            //var STATE_WAITING       = 2;
+            //var STATE_CONNECTED     = 3;
+            //var STATE_DISCONNECTING = 4;
+            //var STATE_DISCONNECTED  = 5;
+            swal({
+                title: "The connection has been disconnected!",
+                });
+        } else {
+            console.log(state);
+        }
+    }
+
+    // Mouse
+    var mouse = new Guacamole.Mouse(guac.getDisplay().getElement());
+
+    mouse.onmousedown =
+    mouse.onmouseup   =
+    mouse.onmousemove = function(mouseState) {
+        guac.sendMouseState(mouseState);
+    };
+
+    // Keyboard
+    var keyboard = new Guacamole.Keyboard(document);
+
+    keyboard.onkeydown = function (keysym) {
+        guac.sendKeyEvent(1, keysym);
+    };
+
+    keyboard.onkeyup = function (keysym) {
+        guac.sendKeyEvent(0, keysym);
+    };
+</script>
+</body>
+</html>

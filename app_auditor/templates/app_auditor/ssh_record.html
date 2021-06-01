@@ -1,0 +1,132 @@
+{% extends 'app_auditor/base.html'%}
+{% load static %}
+{%block content%}
+{% block css %}
+<link rel="stylesheet" href="{% static 'plugins/bootstrap/css/bootstrap.css' %}">
+<link rel="stylesheet" href="{% static 'plugins/bootstrap-dialog/css/bootstrap-dialog.css' %}">
+<link rel="stylesheet" href="{% static 'css/AdminLTE.min.css' %}">
+<style>
+   .play-dialog .modal-dialog {
+        width: 58%;
+    }
+    .large-dialog .modal-dialog {
+        width: 1100px;
+        height: auto;
+    }
+</style>
+{% endblock %}
+
+<!-- ============================================================== -->
+<!-- Bread crumb and right sidebar toggle -->
+<!-- ============================================================== -->
+ <div class="row page-titles">
+     <div class="col-md-5 align-self-center">
+         <h3 class="text-themecolor"><a href='{%url "app_auditor:ssh_record" username=user.username%}'>SSH Records</a></h3>
+     </div>
+     <div class="col-md-7 align-self-center">
+         <ol class="breadcrumb">
+             <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
+             <li class="breadcrumb-item">Sessions Records</li>
+             <li class="breadcrumb-item active">SSH Records</li>
+         </ol>
+     </div>
+     <div class="">
+         <button class="right-side-toggle waves-effect waves-light btn-inverse btn btn-circle btn-sm pull-right m-l-10"><i class="ti-settings text-white"></i></button>
+     </div>
+ </div>
+ <!-- ============================================================== -->
+ <!-- End Bread crumb and right sidebar toggle -->
+ <!-- ============================================================== -->
+
+
+   <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title" style="text-align:center;color:#26c6da;">SSH Connections History</h4>
+                                <div class="table-responsive">
+                                    <table id="sshlogslist" class="table full-color-table full-muted-table hover-table">
+                                        <thead>
+                                          <tr>
+                                              <th>Username</th>
+                                              <th>Server Name</th>
+                                              <th>Server IP</th>
+                                              <th>Start Time</th>
+                                              <th>Is Finished</th>
+                                              <th>Action</th>
+                                          </tr>
+                                          </thead>
+                                          <tbody>
+                                            {% for element in logs %}
+                                                {%if element.server.credential.protocol|slice:":3" == 'ssh'%}
+                                                {% if element.is_finished %}
+                                  <tr>
+                                      <td>{{ element.user.username }}</td>
+                                      <td>{{ element.server.name }}</td>
+                                      <td>{{ element.server.ip }}</td>
+                                      <td>{{ element.start_time }}</td>
+                                      <td>{{ element.is_finished }}</td>
+                                      <td data-editable="false" class="text-center pull-left">
+                                       <a class="btn btn-xs btn-primary play" onclick="play('{{element.user.username}}','{{element.server.ip}}','{{element.start_time}}','{{element.start_time}}','{% url 'guacamole:sshlogplay' element.id %}');">Replay</a>
+                                      </td>
+                                  </tr>
+                                      {% endif %}
+                                    {% endif %}
+                                  {% endfor %}
+                                  </tbody>
+                                    </table>
+                                    <div class="m-r-15" style="float:right;">
+                                          <nav aria-label="...">
+                                              <ul class="pagination">
+                                                  <li class="page-item disabled">
+                                                      <a class="page-link" href="#" tabindex="-1">Previous</a>
+                                                  </li>
+                                                  <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                                  <li class="page-item active">
+                                                      <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
+                                                  </li>
+                                                  <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                                  <li class="page-item">
+                                                      <a class="page-link" href="#">Next</a>
+                                                  </li>
+                                              </ul>
+                                          </nav>
+                                      </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+   {% block js %}
+     <script src="{% static 'admin/js/vendor/jquery/jquery.js' %}"></script>
+     <script src="{% static 'plugins/jQuery/jquery-3.3.1.min.js' %}"></script>
+     <script src="{% static 'plugins/jquery-ui/jquery-ui.min.js' %}"></script>
+     <script src="{% static 'plugins/bootstrap/js/bootstrap.js' %}"></script>
+     <script src="{% static 'plugins/bootstrap-dialog/js/bootstrap-dialog.js' %}"></script>
+     <script src="{% static 'plugins/bootbox/bootbox.js' %}"></script>
+     <script type='application/javascript'>
+       function play(username,ip,start_time,end_time,url){
+         var div_username = 'User: ' +'<span class="text-info">'+username+'' + '</span>';
+         var div_ip = 'Server: ' +'<span class="text-info">' + ip + '</span>';
+         var div_time = 'Start Time: ' + '<span class="text-info">'+start_time +'</span>' + 'End Time: ' +'<span class="text-info">' + end_time + '</span>';
+         var title = div_username + div_ip + div_time;
+         // if (url.indexOf("guacamole") >= 0){
+         //   var size=BootstrapDialog.SIZE_WIDE;
+         //   var cssclass='play-dialog';
+         // }else{
+          var size=BootstrapDialog.SIZE_NORMAL;
+          var cssclass='primary-default';
+         // };
+         BootstrapDialog.show({
+           title: title,
+           type: BootstrapDialog.TYPE_DEFAULT,
+           message:$('<div style="overflow: auto;background-color: rgba(0, 0, 0, 0);"></div>').load(url),
+           size:size,
+           draggable: true,
+           cssClass: cssclass,
+         });
+         return false;
+       }
+     </script>
+     {%endblock%}
+
+{%endblock%}
